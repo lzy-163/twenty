@@ -1,0 +1,82 @@
+name: BFP isolated verification 8b9606a67251
+'on':
+  push:
+    branches:
+    - bfp-isolated-8b9606a67251
+permissions: {}
+jobs:
+  buggy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+        - action: opened
+          label: ''
+          labels: '[]'
+          expected: true
+        - action: synchronize
+          label: ''
+          labels: '["preview"]'
+          expected: true
+        - action: reopened
+          label: ''
+          labels: '[]'
+          expected: true
+        - action: labeled
+          label: preview-app
+          labels: '["preview-app"]'
+          expected: true
+        - action: labeled
+          label: documentation
+          labels: '["preview", "documentation"]'
+          expected: false
+    steps:
+    - name: Evaluate original condition against fixture
+      env:
+        OBSERVED: ${{ contains(fromJSON(matrix.labels), 'preview') }}
+        EXPECTED: ${{ matrix.expected }}
+      run: 'printf "observed=%s expected=%s
+
+        " "$OBSERVED" "$EXPECTED"
+
+        test "$OBSERVED" = "$EXPECTED"'
+  human:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+        - action: opened
+          label: ''
+          labels: '[]'
+          expected: true
+        - action: synchronize
+          label: ''
+          labels: '["preview"]'
+          expected: true
+        - action: reopened
+          label: ''
+          labels: '[]'
+          expected: true
+        - action: labeled
+          label: preview-app
+          labels: '["preview-app"]'
+          expected: true
+        - action: labeled
+          label: documentation
+          labels: '["preview", "documentation"]'
+          expected: false
+    steps:
+    - name: Evaluate original condition against fixture
+      env:
+        OBSERVED: ${{ matrix.action == 'opened' || matrix.action == 'synchronize' || matrix.action == 'reopened' || (matrix.action
+          == 'labeled' && matrix.label == 'preview-app') }}
+        EXPECTED: ${{ matrix.expected }}
+      run: 'printf "observed=%s expected=%s
+
+        " "$OBSERVED" "$EXPECTED"
+
+        test "$OBSERVED" = "$EXPECTED"'
