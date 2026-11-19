@@ -1,5 +1,4 @@
 name: CI Chrome Extension
-timeout-minutes: 15
 on:
   push:
     branches:
@@ -14,6 +13,7 @@ concurrency:
 jobs:
   chrome-extension-build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     env:
       VITE_SERVER_BASE_URL: http://localhost:3000
       VITE_FRONT_BASE_URL: http://localhost:3001
@@ -42,6 +42,6 @@ jobs:
         run: npx nx build twenty-chrome-extension
 
       - name: Mark as Valid if No Changes
-        if: steps.changed-files.outputs.changed != 'true'
+        if: steps.changed-files.outputs.any_changed != 'true'
         run: |
-          echo "No relevant changes detected. Marking as valid."  
+          echo "No relevant changes detected. Marking as valid."
