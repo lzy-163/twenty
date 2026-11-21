@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   chrome-extension-build:
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     env:
       VITE_SERVER_BASE_URL: http://localhost:3000
@@ -42,6 +43,6 @@ jobs:
         run: npx nx build twenty-chrome-extension
 
       - name: Mark as Valid if No Changes
-        if: steps.changed-files.outputs.changed != 'true'
+        if: steps.changed-files.outputs.any_changed != 'true'
         run: |
-          echo "No relevant changes detected. Marking as valid."  
+          echo "No relevant changes detected. Marking as valid."
