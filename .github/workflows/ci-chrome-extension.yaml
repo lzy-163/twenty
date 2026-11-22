@@ -42,6 +42,6 @@ jobs:
         run: npx nx build twenty-chrome-extension
 
       - name: Mark as Valid if No Changes
-        if: steps.changed-files.outputs.changed != 'true'
+        if: steps.changed-files.outputs.any_changed != 'true'
         run: |
-          echo "No relevant changes detected. Marking as valid."  
+          echo "No relevant changes detected. Marking as valid."
