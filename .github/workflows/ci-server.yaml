@@ -1,5 +1,4 @@
 name: CI Server
-timeout-minutes: 30
 on:
   push:
     branches:
@@ -14,6 +13,7 @@ concurrency:
 jobs:
   server-setup:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
     services:
@@ -69,6 +69,7 @@ jobs:
 
   server-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: server-setup
     env:
       NX_REJECT_UNKNOWN_LOCAL_CACHE: 0
@@ -104,6 +105,7 @@ jobs:
 
   server-integration-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: server-setup
     services:
       postgres:
